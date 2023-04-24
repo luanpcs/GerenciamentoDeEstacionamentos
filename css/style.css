@@ -1,0 +1,79 @@
+*{
+    font-family: 'Roboto', sans-serif;
+    padding:0;
+    margin:0;
+    border:0
+}
+header{
+    background-color: rgb(255,255,255);
+	
+}
+#header-logo{
+    width:64px;
+    height:64px;
+}
+#header-msg{
+    font-size: 25px;
+    color:#000;
+    float:right
+}
+#btnOne{
+    background-color: rgb(255,255,255);
+    color:white;
+}
+#btnOne:focus,#btnOne:hover{
+    box-shadow: none;
+    outline:none;
+}
+
+#tableHead{
+    background-color:rgb(255,255,255);
+}
+#searchInput{
+    height: calc(1.5em + .75rem + 2px);
+    padding: .375rem .75rem;
+    border-bottom: 1px solid #ced4da;
+}
+#searchInput:hover,#searchInput:focus{
+    box-shadow: none;
+    outline:none;
+}
+
+.back{
+    float: left;
+    margin-left: 5px;
+    width: 50px;
+}
+
+.header{
+    text-align:center;
+    height: 50px;
+    background-color: white;
+    font-size: 30px;
+}
+
+.menu{
+    width: 110px;
+    margin-left: 100px;
+    margin-right: 100px;
+    margin-top: 300px;
+}
+
+.mapVagas{
+    position: absolute;
+    width: 90px;
+    height: 180px;
+    font-size: 50px;
+    color: white;
+    border:solid 1px;
+    border-color: #000;
+    background-color: #79d463ff;
+}
+
+.busy{
+    background-color: #e05a5aff
+}
+
+.free{
+    background-color: #79d463ff;
+}

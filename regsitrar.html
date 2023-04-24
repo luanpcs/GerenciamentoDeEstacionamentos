@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <title>Gerência de estacionamentos</title>
+</head>
+
+<body style="background-color:white;">
+    <header class="shadow">
+        <header>
+            <a href='/index.html'><img src="assets/imgHome.png" alt="..." class="rounded back"></a>
+            <div class="header">Sistema de gerenciamento de estacionamentos</div>
+        </header>
+    </header>
+
+    <div class="table-container mt-5 mb-5 w-75 mx-auto" >
+        <input type="text" class="w-100 mb-3" id="searchInput" placeholder="Search...">
+        <table class="table table-striped shadow " id="parkingTable">
+                <thead class="text-black" id="tableHead">
+                  <tr>
+                    <th scope="col">Cliente</th>
+                    <th scope="col">Carro</th>
+                    <th scope="col">Placa</th>
+                    <th scope="col">Vaga</th>
+                    <th scope="col">Ações</th>
+                    <th scope="col">Valor total</th>
+                  </tr>
+                </thead>
+                <tbody id="tableBody">
+                </tbody>
+              </table>
+    </div>
+    <script src="./js/bootstrap.min.js"></script>
+    <script src="./js/scriptRegistrar.js"></script>
+</body>
+
+</html>

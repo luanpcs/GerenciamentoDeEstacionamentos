@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <title>Gerência de estacionamentos</title>
+</head>
+
+<body style="background-color:white;">
+    <header class="shadow">
+        <header>
+          <a href='/index.html'><img src="assets/imgHome.png" alt="..." class="back"></a>
+            <div class="header">Sistema de gerenciamento de estacionamentos</div>
+        </header>
+    </header>
+
+    <div class="table-container mt-5 mb-5 w-75 mx-auto" >
+            <input type="text" class="w-100 mb-3" id="searchInput" placeholder="Search...">
+            <table class="table table-striped shadow " id="parkingTable">
+                    <thead class="text-black" id="tableHead">
+                      <tr>
+                        <th scope="col">Cliente</th>
+                        <th scope="col">Carro</th>
+                        <th scope="col">Placa</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tableBody"></tbody>
+            </table>
+              <div style="position: relative;">
+                <img src="assets/imgMap.png" style="margin-left: 350px;"  alt="Imagem">
+                <button class="mapVagas v1 busy" style="top: 90px; left: 440px; width: 90px; height: 180px">1</button>
+                <button class="mapVagas v6" style="top: 365px; left: 440px;">6</button>
+
+                <button class="mapVagas v2 busy" style="top: 90px; left: 553px;">2</button>
+                <button class="mapVagas v7" style="top: 365px; left: 553px;">7</button>
+
+                <button class="mapVagas v3" style="top: 90px; left: 666px;">3</button>
+                <button class="mapVagas v8" style="top: 365px; left: 666px;">8</button>
+
+                <button class="mapVagas v4" style="top: 90px; left: 776px;">4</button>
+                <button class="mapVagas v9 busy" style="top: 365px; left: 776px;">9</button>
+
+                <button class="mapVagas v5 busy" style="top: 90px; left: 889px;" >5</button>
+                <button class="mapVagas v10" style="top: 365px; left: 889px;">10</button>
+
+            </div>
+    </div>
+
+    <script src="./js/bootstrap.min.js"></script>
+    <script src="./js/scriptConsulta.js"></script>
+</body>
+
+</html>
