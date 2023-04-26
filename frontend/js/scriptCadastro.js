@@ -1,3 +1,6 @@
+import '../css/style.css'
+import axios from 'axios'
+
 //Entry Class: Represent each entry in the parking lot
 class Entry{
     constructor(owner,car,licensePlate,entryDate,exitDate){
