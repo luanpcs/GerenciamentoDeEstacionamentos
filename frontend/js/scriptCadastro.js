@@ -96,6 +96,17 @@ class Store{
 }
 //Event Display
     document.addEventListener('DOMContentLoaded',UI.displayEntries);
+
+    axios.get('http://localhost:5000/api/veiculos_cadastrados')
+    .then(response =>
+    {
+        console.log(response.data)
+    })
+    .catch(error =>
+    {
+        console.log(error)
+    })
+
 //Event Add
     document.querySelector('#entryForm').addEventListener('submit',(e)=>{
         e.preventDefault();
@@ -108,6 +119,19 @@ class Store{
         }
         //Instatiate Entry
         const entry = new Entry(owner, car, licensePlate);
+
+        axios.post('http://localhost:5000/api/add',{
+            nome: owner,
+            modelo: car,
+            placa: licensePlate
+        })
+        .then(response => {
+            console.log(response.data)
+        })
+        .catch(error => {
+            console.error(error)
+        })
+
         //Add the entry do de UI table
         UI.addEntryToTable(entry);
         Store.addEntries(entry);
@@ -116,6 +140,7 @@ class Store{
 
         UI.showAlert('Usuário cadastrado com sucesso','success');
     });
+
 //Event Remove
     document.querySelector('#tableBody').addEventListener('click',(e)=>{
         //Call to UI function that removes entry from the table
@@ -124,6 +149,22 @@ class Store{
         var licensePlate = e.target.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.textContent;
         //Call to Store function to remove entry from the local storage
         Store.removeEntries(licensePlate);
+
+        axios.delete('http://localhost:5000/api/veiculos/:id',
+        {
+            data: {
+              id: veiculoId
+            }
+        })
+        .then(response =>
+        {
+            console.log(response.data)
+        })
+        .catch(error =>
+        {
+            console.log(error)
+        })
+
         //Show alert that entry was removed
         UI.showAlert('Car successfully removed from the parking lot list','success');
     })
@@ -154,4 +195,43 @@ class Store{
                 tableLine[i].style.display = 'none';
             }
         }
+
+        axios.get('http://localhost:5000/api/procurar_veiculo')
+        .then((response) =>
+        {
+          const data = response.data;
+          updateTable(data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     });
+
+// Function to update the table with data
+function updateTable(data)
+{
+    const tableBody = document.querySelector('#tableBody')
+    tableBody.innerHTML = ''
+  
+    // Loop through each object in the data array and add a new row to the table
+    data.forEach((vehicle) =>
+    {
+      const newRow = document.createElement('tr')
+  
+      // Add cells to the row with the corresponding vehicle data
+      const nameCell = document.createElement('td')
+      nameCell.innerHTML = vehicle.name
+      newRow.appendChild(nameCell)
+  
+      const modelCell = document.createElement('td')
+      modelCell.innerHTML = vehicle.model
+      newRow.appendChild(modelCell)
+  
+      const plateCell = document.createElement('td')
+      plateCell.innerHTML = vehicle.plate
+      newRow.appendChild(plateCell)
+  
+      tableBody.appendChild(newRow)
+    })
+}
+  
