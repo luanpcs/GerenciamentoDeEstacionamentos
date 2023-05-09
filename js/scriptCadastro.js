@@ -1,3 +1,39 @@
+
+function enviarCadastro(nome, modelo, placa) {
+const url = 'http://localhost:3000/cadastro';
+  
+    // Faz a requisição POST usando a API Fetch
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ nome, modelo, placa }),
+    })
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(error => console.error(error));
+  }
+
+function buscarCadastro() {
+const url1 = 'http://localhost:3000/Getcadastro';
+
+// Faz a requisição GET usando a API Fetch
+fetch(url1)
+.then(response => response.json())
+.then(data => {
+    const cadastros = data.map(item => {
+    return {
+        nome: item.nome,
+        modelo: item.modelo,
+        placa: item.placa
+    }
+    });
+    console.log(cadastros);
+})
+.catch(error => console.error(error));
+}
+  
 //Entry Class: Represent each entry in the parking lot
 class Entry{
     constructor(owner,car,licensePlate,entryDate,exitDate){
@@ -11,8 +47,10 @@ class Entry{
 //UI Class: Handle User Interface Tasks
 class UI{
     static displayEntries(){
+        buscarCadastro()
         const entries = Store.getEntries();
         entries.forEach((entry) => UI.addEntryToTable(entry));
+       
     }
     static addEntryToTable(entry){
         const tableBody=document.querySelector('#tableBody');
@@ -22,6 +60,8 @@ class UI{
                             <td>${entry.licensePlate}</td>
                         `;
         tableBody.appendChild(row);
+        
+         
     }
     static clearInput(){
         //Selects all the inputs
@@ -80,6 +120,7 @@ class Store{
         const entries = Store.getEntries();
         entries.push(entry);
         localStorage.setItem('entries', JSON.stringify(entries));
+        enviarCadastro(entry.owner, entry.car, entry.licensePlate)
     }
     static removeEntries(licensePlate){
         const entries = Store.getEntries();
