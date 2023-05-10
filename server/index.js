@@ -20,19 +20,22 @@ mongoose.connect(uri)
 
 // Definição do modelo de dados
 const Schema = mongoose.Schema;
-const ModeloCadastro = new Schema({
-  nome: String,
-  modelo: String,
-  placa: String,
+const ModeloCadastro = new mongoose.Schema({
+  nome: { type: String, required: true },
+  modelo: { type: String, required: true },
+  placa: { type: String, required: true }
 });
 
+
+
 const ModeloEstacionamento = mongoose.model('Cadastro', ModeloCadastro);
+
 
 // Rota para enviar dados
 app.post('/cadastro', async (req, res) => {
   try {
     const { nome, modelo, placa } = req.body;
-    const model = new ModeloEstacionamento({ nome, modelo, placa });
+    const model = new ModeloEstacionamento({nome, modelo, placa });
     await model.save();
     res.status(200).json({ message: 'Dados enviados com sucesso!' });
   } catch (error) {
@@ -50,6 +53,21 @@ app.get('/Getcadastro', async (req, res) => {
     res.status(500).json({ message: 'Erro ao buscar dados.' });
   }
 });
+
+app.delete('/descadastro/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    await ModeloEstacionamento.findByIdAndDelete(id);
+    res.status(200).json({ message: 'Dados excluídos com sucesso!' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Erro ao excluir dados.' });
+  }
+});
+
+
+
+
 
 // Inicia o servidor
 const PORT = 3000;

@@ -15,25 +15,46 @@ const url = 'http://localhost:3000/cadastro';
     .catch(error => console.error(error));
   }
 
-function buscarCadastro() {
-const url1 = 'http://localhost:3000/Getcadastro';
 
-// Faz a requisição GET usando a API Fetch
-fetch(url1)
-.then(response => response.json())
-.then(data => {
-    const cadastros = data.map(item => {
-    return {
-        nome: item.nome,
-        modelo: item.modelo,
-        placa: item.placa
-    }
-    });
-    console.log(cadastros);
-})
-.catch(error => console.error(error));
-}
+  function buscarCadastro() {
+    const url = 'http://localhost:3000/Getcadastro';
   
+    return fetch(url)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Erro na requisição');
+        }
+        return response.json();
+      })
+      .then(data => {
+        const cadastros = data.map(item => ({
+            _id: item._id,
+          nome: item.nome,
+          modelo: item.modelo,
+          placa: item.placa
+        }));
+        console.log(cadastros);
+        return cadastros;
+      })
+      .catch(error => {
+        console.error(error);
+        throw error;
+      });
+  }
+
+
+  function deletarCadastro(id) {
+    const url = `http://localhost:3000/descadastro/${id}`;
+  
+    fetch(url, {
+      method: 'DELETE'
+    })
+      .then(response => response.json())
+      .then(data => console.log(data))
+      .catch(error => console.error(error));
+      location.reload();
+  }
+
 //Entry Class: Represent each entry in the parking lot
 class Entry{
     constructor(owner,car,licensePlate,entryDate,exitDate){
@@ -46,12 +67,6 @@ class Entry{
 }
 //UI Class: Handle User Interface Tasks
 class UI{
-    static displayEntries(){
-        buscarCadastro()
-        const entries = Store.getEntries();
-        entries.forEach((entry) => UI.addEntryToTable(entry));
-       
-    }
     static addEntryToTable(entry){
         const tableBody=document.querySelector('#tableBody');
         const row = document.createElement('tr');
@@ -117,9 +132,9 @@ class Store{
         return entries;
     }
     static addEntries(entry){
-        const entries = Store.getEntries();
-        entries.push(entry);
-        localStorage.setItem('entries', JSON.stringify(entries));
+        // const entries = Store.getEntries();
+        // entries.push(entry);
+        // localStorage.setItem('entries', JSON.stringify(entries));
         enviarCadastro(entry.owner, entry.car, entry.licensePlate)
     }
     static removeEntries(licensePlate){
@@ -133,7 +148,7 @@ class Store{
     }
 }
 //Event Display
-    document.addEventListener('DOMContentLoaded',UI.displayEntries);
+  //  document.addEventListener('DOMContentLoaded',UI.displayEntries);
 //Event Add
     document.querySelector('#entryForm').addEventListener('submit',(e)=>{
         e.preventDefault();
@@ -147,12 +162,16 @@ class Store{
         //Instatiate Entry
         const entry = new Entry(owner, car, licensePlate);
         //Add the entry do de UI table
-        UI.addEntryToTable(entry);
+       // UI.addEntryToTable(entry);
         Store.addEntries(entry);
         //Delete content of input's
         UI.clearInput();
 
         UI.showAlert('Usuário cadastrado com sucesso','success');
+        console.log(entry)
+        // setTimeout(function() {
+        location.reload();
+        //   }, 1000); // Delay de 2000 milissegundos (2 segundos)
     });
 //Event Remove
     document.querySelector('#tableBody').addEventListener('click',(e)=>{
@@ -193,3 +212,48 @@ class Store{
             }
         }
     });
+
+
+function displayEntries()
+{
+    let cadastros
+    buscarCadastro()
+    .then
+    (dados => 
+        {
+            // Obtém a referência do elemento da tabela
+            var tabela = document.getElementById("tabelaDados");
+
+            // Cria as linhas da tabela com os dados
+            for (var i = 0; i < dados.length; i++) 
+            {
+
+                var linha = tabela.insertRow();
+
+                var nomeCell = linha.insertCell();
+                nomeCell.innerHTML = dados[i].nome;
+              
+                var modeloCell = linha.insertCell();
+                modeloCell.innerHTML = dados[i].modelo;
+              
+                var placaCell = linha.insertCell();
+                placaCell.innerHTML = dados[i].placa;
+              
+                var deleteCell = linha.insertCell();
+
+                var deleteButton = document.createElement("button");
+                deleteButton.innerHTML = "Excluir";
+                deleteButton.classList.add("btn", "btn-danger");
+                deleteButton.dataset.id = dados[i]._id;
+          
+                deleteButton.addEventListener("click", function (event) {
+                  var cadastroId = event.target.dataset.id;
+                  deletarCadastro(cadastroId);
+                });
+          
+                deleteCell.appendChild(deleteButton);
+                
+            }
+        }
+    )
+}
