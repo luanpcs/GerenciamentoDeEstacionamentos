@@ -77,3 +77,83 @@ header{
 .free{
     background-color: #79d463ff;
 }
+
+.parking-row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .parking-space {
+      width: 100px;
+      height: 150px;
+      background-color: #ffffff;
+      border: 1px solid black;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 18px;
+      position: relative;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.3s;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      margin-left: 10px;
+      color: black;
+      font-size: 40px;
+  }
+
+  .parking-space:hover {
+      transform: scale(1.15);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .parking-info {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+  }
+
+  .parking-info p {
+    margin: 10px 0;
+  }
+  
+  .parking-space:not(.occupied)::after {
+      content: '';
+      position: absolute;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 98px;
+      height: 20px;
+      background-color: #27ae60; 
+  }
+
+  .parking-space.occupied::after {
+      content: '';
+      position: absolute;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 98px;
+      height: 20px;
+      background-color: #e74c3c;
+  }
+
+  .parking-space:not(.occupied):hover {
+      background-color: #27ae60;
+      color: white
+  }
+
+  .parking-space.occupied:hover {
+  background-color: #e74c3c;
+  color: white
+  }
+
+  .destaque {
+    font-weight: bold;
+    border: 3px solid red;
+    transition: all 0.1s ease-in-out;
+  }
+  

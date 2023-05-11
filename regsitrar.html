@@ -11,7 +11,7 @@
     <title>Gerência de estacionamentos</title>
 </head>
 
-<body style="background-color:white;">
+<body onload = "displayEntries()" style="background-color:white;">
     <header class="shadow">
         <header>
             <a href='/index.html'><img src="assets/imgHome.png" alt="..." class="rounded back"></a>
@@ -20,21 +20,24 @@
     </header>
 
     <div class="table-container mt-5 mb-5 w-75 mx-auto" >
-        <input type="text" class="w-100 mb-3" id="searchInput" placeholder="Search...">
-        <table class="table table-striped shadow " id="parkingTable">
-                <thead class="text-black" id="tableHead">
-                  <tr>
-                    <th scope="col">Cliente</th>
-                    <th scope="col">Carro</th>
-                    <th scope="col">Placa</th>
-                    <th scope="col">Vaga</th>
-                    <th scope="col">Ações</th>
-                    <th scope="col">Valor total</th>
-                  </tr>
-                </thead>
-                <tbody id="tableBody">
-                </tbody>
-              </table>
+      <input type="text" class="w-100 mb-3" id="searchInput" placeholder="Buscar..." oninput="searchTable()">
+      <table class="table table-striped shadow " id="parkingTable">
+              <tbody id="tableBody">
+                  <div class="container">
+                        <thead>
+                          <tr>
+                            <th>Cliente</th>
+                            <th>Carro</th>
+                            <th>Placa</th>
+                            <th>Entrada</th>
+                            <th>Saída</th>
+                          </tr>
+                        </thead>
+                        <tbody id="tabelaDados">
+                        </tbody>
+                    </div>                  
+              </tbody>
+            </table>
     </div>
     <script src="./js/bootstrap.min.js"></script>
     <script src="./js/scriptRegistrar.js"></script>

@@ -26,9 +26,123 @@ const ModeloCadastro = new mongoose.Schema({
   placa: { type: String, required: true }
 });
 
+const ModeloU = new mongoose.Schema({
+  nome: { type: String, required: true },
+  modelo: { type: String, required: true },
+  placa: { type: String, required: true },
+  timestampEntrada: { type: Date },
+  timestampSaida: { type: Date },
+  vaga: {type: Number},
+  valor: { type: Number }
+});
+
+const ModeloVagas = new mongoose.Schema({
+  vagas: { type: Array, required: true, default: new Array(12) }
+});
 
 
-const ModeloEstacionamento = mongoose.model('Cadastro', ModeloCadastro);
+
+const ModeloEstacionamento = mongoose.model('cadastro', ModeloCadastro);
+const ModeloUtilizacao = mongoose.model('status', ModeloU);
+const ModeloStatusVagas = mongoose.model('statusVaga', ModeloVagas);
+
+
+app.post('/tempoReal', async (req, res) => {
+  try {
+    const { nome, modelo, placa, timestampEntrada, timestampSaida, vaga, valor } = req.body;
+    const model = new ModeloUtilizacao({ nome, modelo, placa, timestampEntrada, timestampSaida, vaga, valor });
+    await model.save();
+    res.status(200).json({ message: 'Dados enviados com sucesso!' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Erro ao enviar dados.' });
+  }
+});
+
+app.put('/tempoReal/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { nome, modelo, placa, timestampSaida, valor } = req.body;
+    
+    const updatedModel = await ModeloUtilizacao.findByIdAndUpdate(id, { 
+      nome, 
+      modelo, 
+      placa, 
+      timestampSaida, 
+      valor 
+    }, { new: true });
+    
+    if (!updatedModel) {
+      return res.status(404).json({ message: 'Registro não encontrado.' });
+    }
+    
+    res.status(200).json({ message: 'Registro atualizado com sucesso!', data: updatedModel });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Erro ao atualizar registro.' });
+  }
+});
+
+
+app.delete('/tempoReal/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    await ModeloUtilizacao.findByIdAndDelete(id);
+    res.status(200).json({ message: 'Registro excluído com sucesso!' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Erro ao excluir o registro.' });
+  }
+});
+
+
+app.get('/tempoReal', async (req, res) => {
+  try {
+    const dados = await ModeloUtilizacao.find();
+    res.status(200).json(dados);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Erro ao obter os dados de tempo real.' });
+  }
+});
+
+
+app.post('/vagas', async (req, res) => {
+  try {
+    const { vagas } = req.body;
+    const model = new ModeloStatusVagas({ vagas });
+    await model.save();
+    res.status(200).json({ message: 'Dados enviados com sucesso!' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Erro ao enviar dados.' });
+  }
+});
+
+app.put('/vagas/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { vagas } = req.body;
+    const updatedModel = await ModeloStatusVagas.findByIdAndUpdate(id, { vagas }, { new: true });
+    res.status(200).json({ message: 'Dados atualizados com sucesso!', data: updatedModel });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Erro ao atualizar dados.' });
+  }
+});
+
+app.get('/vagas', async (req, res) => {
+  try {
+    const models = await ModeloStatusVagas.find();
+    res.status(200).json(models);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Erro ao obter dados de vagas.' });
+  }
+});
+
+
+
 
 
 // Rota para enviar dados
@@ -91,6 +205,8 @@ app.listen(PORT, () => {
     }
     
   };
+
+
 
 
   

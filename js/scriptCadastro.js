@@ -42,6 +42,30 @@ const url = 'http://localhost:3000/cadastro';
       });
   }
 
+  function searchTable() {
+    var input = document.getElementById("searchInput");
+    var filter = input.value.toUpperCase();
+    var table = document.getElementById("tabelaDados");
+    var rows = table.getElementsByTagName("tr");
+  
+    // Itera sobre as linhas da tabela e mostra ou oculta as linhas com base no valor de pesquisa
+    for (var i = 0; i < rows.length; i++) {
+      var row = rows[i];
+      var rowData = row.getElementsByTagName("td");
+  
+      var match = false;
+      for (var j = 0; j < rowData.length; j++) {
+        var cell = rowData[j];
+        if (cell.innerHTML.toUpperCase().indexOf(filter) > -1) {
+          match = true;
+          break;
+        }
+      }
+  
+      // Mostra ou oculta a linha com base na correspondência
+      row.style.display = match ? "" : "none";
+    }
+  }
 
   function deletarCadastro(id) {
     const url = `http://localhost:3000/descadastro/${id}`;
@@ -52,7 +76,8 @@ const url = 'http://localhost:3000/cadastro';
       .then(response => response.json())
       .then(data => console.log(data))
       .catch(error => console.error(error));
-      location.reload();
+      UI.showAlert('Usuário removido com sucesso!','success');
+      setTimeout(function() {location.reload();}, 1500); 
   }
 
 //Entry Class: Represent each entry in the parking lot
@@ -108,14 +133,6 @@ class UI{
             UI.showAlert('Preencha todos os dados!','danger');
             return false;
         }
-/*        if(exitDate < entryDate){
-            UI.showAlert('A data de entrada precisa ser anterior ou igual a de saída!','danger');
-            return false;
-        }
-         if(!licensePlateRegex.test(licensePlate)){
-            UI.showAlert('License Plate must be like NN-NN-LL, NN-LL-NN, LL-NN-NN','danger');
-            return false;
-        } */
         return true;
     }
 }
@@ -165,13 +182,11 @@ class Store{
        // UI.addEntryToTable(entry);
         Store.addEntries(entry);
         //Delete content of input's
-        UI.clearInput();
+       // UI.clearInput();
 
-        UI.showAlert('Usuário cadastrado com sucesso','success');
-        console.log(entry)
-        // setTimeout(function() {
-        location.reload();
-        //   }, 1000); // Delay de 2000 milissegundos (2 segundos)
+        UI.showAlert('Usuário cadastrado com sucesso!','success');
+        //console.log(entry)
+        setTimeout(function() {location.reload();}, 1500); 
     });
 //Event Remove
     document.querySelector('#tableBody').addEventListener('click',(e)=>{

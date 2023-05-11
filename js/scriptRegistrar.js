@@ -15,20 +15,21 @@ class UI{
         const entries = Store.getEntries();
         entries.forEach((entry) => UI.addEntryToTable(entry));
     }
-    static addEntryToTable(entry){
+    // static addEntryToTable(entry){
 
-        const tableBody=document.querySelector('#tableBody');
-        const row = document.createElement('tr');
-        row.innerHTML = `   <td>${entry.owner}</td>
-                            <td>${entry.car}</td>
-                            <td>${entry.licensePlate}</td>
-                            <td>${1}</td>
-                            <td><button type="button" class="btn btn-success in">Registrar entrada</button>
-                            <button type="button" class="btn btn-danger out">Registrar saída</button></td>
-                            <td>${0}</td>
-                        `;
-        tableBody.appendChild(row);
-    }
+    //     const tableBody=document.querySelector('#tableBody');
+    //     const row = document.createElement('tr');
+    //     row.innerHTML = `   <td>${entry.owner}</td>
+    //                         <td>${entry.car}</td>
+    //                         <td>${entry.licensePlate}</td>
+    //                         <td>${1}</td>
+    //                         <td><button type="button" class="btn btn-success in">Registrar entrada</button>
+    //                         <button type="button" class="btn btn-danger out">Registrar saída</button></td>
+    //                         <td>${0}</td>
+    //                     `;
+    //     tableBody.appendChild(row);
+    // }
+
     static clearInput(){
         //Selects all the inputs
         const inputs = document.querySelectorAll('.form-control');
@@ -161,3 +162,294 @@ class Store{
             }
         }
     });
+
+function buscarCadastro() {
+        const url = 'http://localhost:3000/Getcadastro';
+      
+        return fetch(url)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Erro na requisição');
+            }
+            return response.json();
+          })
+          .then(data => {
+            const cadastros = data.map(item => ({
+                _id: item._id,
+              nome: item.nome,
+              modelo: item.modelo,
+              placa: item.placa
+            }));
+            console.log(cadastros);
+            return cadastros;
+          })
+          .catch(error => {
+            console.error(error);
+            throw error;
+          });
+      }
+
+
+      function postStatus(nome, modelo, placa, timestampEntrada, timestampSaida, vaga, valor) {
+        const url = 'http://localhost:3000/tempoReal';
+        return fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({nome, modelo, placa, timestampEntrada, timestampSaida, vaga, valor})
+        })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error(error));
+      }
+      
+
+
+function displayEntries()
+{
+    buscarCadastro()
+    .then
+    (dados => {
+        // Obtém a referência do elemento da tabela
+        var tabela = document.getElementById("tabelaDados");
+      
+        // Cria as linhas da tabela com os dados
+        for (var i = 0; i < dados.length; i++) {
+          var linha = tabela.insertRow();
+      
+          var nomeCell = linha.insertCell();
+          nomeCell.innerHTML = dados[i].nome;
+      
+          var modeloCell = linha.insertCell();
+          modeloCell.innerHTML = dados[i].modelo;
+      
+          var placaCell = linha.insertCell();
+          placaCell.innerHTML = dados[i].placa;
+      
+          var entradaCell = linha.insertCell();
+          var entradaBtn = document.createElement("button");
+          entradaBtn.innerHTML = "Registrar Entrada";
+          entradaBtn.classList.add("btn", "btn-success"); // Adiciona classes do Bootstrap
+          entradaBtn.addEventListener("click", criarFuncaoEntrada(dados[i])); // Chama a função criarFuncaoEntrada passando o índice i
+          entradaCell.appendChild(entradaBtn);
+      
+          var saidaCell = linha.insertCell();
+          var saidaBtn = document.createElement("button");
+          saidaBtn.innerHTML = "Registrar Saída";
+          saidaBtn.classList.add("btn", "btn-danger"); // Adiciona classes do Bootstrap
+          saidaBtn.addEventListener("click", criarFuncaoSaida(dados[i])); // Chama a função criarFuncaoSaida passando o índice i
+          saidaCell.appendChild(saidaBtn);
+        }
+      }
+    )
+}
+
+// Função para criar a função de entrada
+function criarFuncaoEntrada(dado) {
+    return function() {
+      var timestamp = Date.now();
+      var vagaEscolhida = null
+      var dadosVagas = [0,0,0,0,0,0,0,0,0,0,0,0]
+      // enviarVagas(dadosVagas)
+
+    obterTodosVagas()
+    .then
+    (dados => {
+        for (let i = 0; i < dados[0].vagas.length; i++) {
+            if (dados[0].vagas[i] == 0)
+            {
+                dados[0].vagas[i] = 1
+                vagaEscolhida = i+1
+                break
+            }
+        }
+        postStatus(dado.nome, dado.modelo, dado.placa, timestamp, timestamp , vagaEscolhida, 0)
+        atualizarVagas(dados[0]._id, dados[0].vagas);
+    })
+
+    };
+  }
+  
+  // Função para criar a função de saída
+  function criarFuncaoSaida(dado) {
+    return function() {
+      var timestamp = Date.now();
+      var vagaAtual
+      var vagasBanco
+      buscarTempoReal()
+      .then
+      (dados =>{
+
+        for (var i = 0; i < dados.length; i++)
+        {
+          if(dados[i].placa == dado.placa)
+          {
+            dado._id = dados[i]._id
+            vagaAtual = dados[i].vaga
+          }
+        }
+        atualizarRegistroTempoReal(dado._id, dado.nome, dado.modelo, dado.placa, timestamp, 0) 
+        obterTodosVagas()
+        .then
+        (vagas => {
+          vagasBanco = vagas[0].vagas
+          console.log(vagas[0].vagas)
+          vagasBanco[vagaAtual - 1] = 0
+          atualizarVagas(vagas[0]._id, vagasBanco);
+          console.log(vagas)
+        }
+        )
+    })
+      
+
+    };
+  }
+
+
+  function atualizarRegistroTempoReal(id, nome, modelo, placa, timestampSaida, valor) {
+    const url = `http://localhost:3000/tempoReal/${id}`;
+  
+    const dadosAtualizados = {
+      nome,
+      modelo,
+      placa,
+      timestampSaida,
+      valor
+    };
+  
+    return fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(dadosAtualizados)
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Erro na requisição');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log(data.message);
+        return data;
+      })
+      .catch(error => {
+        console.error(error);
+        throw error;
+      });
+  }
+
+  function buscarTempoReal() {
+    const url = 'http://localhost:3000/tempoReal';
+  
+    return fetch(url)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Erro na requisição');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log(data);
+        return data;
+      })
+      .catch(error => {
+        console.error(error);
+        throw error;
+      });
+  }
+
+  function excluirRegistroTempoReal(id) {
+    const url = `http://localhost:3000/tempoReal/${id}`;
+  
+    return fetch(url, { method: 'DELETE' })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Erro na requisição');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log(data.message);
+        return data;
+      })
+      .catch(error => {
+        console.error(error);
+        throw error;
+      });
+  }
+
+
+  function enviarVagas(dadosVagas) {
+    const url = 'http://localhost:3000/vagas';
+  
+    return fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ vagas: dadosVagas })
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Erro na requisição');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log(data);
+        return data;
+      })
+      .catch(error => {
+        console.error(error);
+        throw error;
+      });
+  }
+
+  function atualizarVagas(id, dadosVagas) {
+    const url = `http://localhost:3000/vagas/${id}`;
+  
+    return fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ vagas: dadosVagas })
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Erro na requisição');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log(data);
+        return data;
+      })
+      .catch(error => {
+        console.error(error);
+        throw error;
+      });
+  }
+
+  function obterTodosVagas() {
+    const url = 'http://localhost:3000/vagas';
+  
+    return fetch(url)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Erro na requisição');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log(data);
+        return data;
+      })
+      .catch(error => {
+        console.error(error);
+        throw error;
+      });
+  }
