@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="icon" type="image/png" href="../assets/icon.png">
+    <title>Gerência de estacionamentos</title>
+</head>
+
+<body onload="carregaRegistros()" style="background-color:white;">
+  <header class="shadow">
+    <a href=''><img src="../assets/icon.png" alt="..." class="back icon"></a>
+    <a href='../index.html'><img src="../assets/imgHome.png" alt="..." class="back"></a>
+    <a href='cadastro.html'><img src="../assets/imgUsuarios.png" alt="..." class="back"></a>
+    <a href='regsitrar.html'><img src="../assets/imgINOUT.png" alt="..." class="back"></a>
+    <a href='consulta.html'><img src="../assets/imgSearch.png" alt="..." class="back"></a>
+    <div class="title">Sistema de gerenciamento de estacionamentos</div>
+  </header>
+
+  <div class="container mt-5">
+    <div class="row">
+        <div class="col-md-10">
+            <div class="table-container" style="width: 110%;">
+                <input type="text" class="w-100 mb-3" id="searchInput" placeholder="Buscar..." oninput="searchTable()">
+                <table class="table table-striped shadow" id="parkingTable">
+                    <thead>
+                        <tr>
+                            <th>Cliente</th>
+                            <th>Carro</th>
+                            <th>Placa</th>
+                            <th>Vaga</th>
+                            <th>Registro de entrada</th>
+                            <th>Registro de saída</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelaDados">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-6  d-flex justify-content-end mapa">
+            <div class="parking-lot">
+                <!-- Minimapa do estacionamento -->
+                <div class="parking-row">
+                    <div class="parking-space" id="space-1">1</div>
+                    <div class="parking-space" id="space-2">2</div>
+                    <div class="parking-space" id="space-3">3</div>
+                    <div class="parking-space" id="space-4">4</div>
+                </div>
+                <div class="parking-row">
+                    <div class="parking-space" id="space-5">5</div>
+                    <div class="parking-space" id="space-6">6</div>
+                    <div class="parking-space" id="space-7">7</div>
+                    <div class="parking-space" id="space-8">8</div>
+                </div>
+                <div class="parking-row">
+                    <div class="parking-space" id="space-9">9</div>
+                    <div class="parking-space" id="space-10">10</div>
+                    <div class="parking-space" id="space-11">11</div>
+                    <div class="parking-space" id="space-12">12</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <script src="./js/utils.js"></script>
+    <script src="./js/requests.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <script src="./js/scriptConsulta.js"></script>
+    <script src="../back-end/index.mjs"></script>
+</body>
+
+</html>
