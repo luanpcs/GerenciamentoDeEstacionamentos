@@ -6,7 +6,8 @@ const ModeloCadastro = new mongoose.Schema
         {
             nome: { type: String, required: true },
             modelo: { type: String, required: true },
-            placa: { type: String, required: true }
+            placa: { type: String, required: true },
+            registrado: { type: Boolean }
         }
     );
 

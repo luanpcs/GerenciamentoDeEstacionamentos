@@ -18,6 +18,21 @@ function formatarTimestamp(timestamp) {
     return dataFormatada;
 }
 
+function converterTimestamp(timestamp) {
+    const date = new Date(timestamp);
+    const year = date.getUTCFullYear();
+    const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+    const day = String(date.getUTCDate()).padStart(2, '0');
+    const hours = String(date.getUTCHours()).padStart(2, '0');
+    const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+    const seconds = String(date.getUTCSeconds()).padStart(2, '0');
+    const milliseconds = String(date.getUTCMilliseconds()).padStart(3, '0');
+
+    const dataHoraString = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}Z`;
+
+    return dataHoraString
+}
+
 function showAlert(message, className) {
     const div = document.createElement('div');
     div.className = `alert alert-${className} w-50 mx-auto`;
@@ -75,7 +90,6 @@ function markSpaceAsOccupied(spaceId) {
 
 function hoverVaga(Div, hover) {
     const valorDiv = parseInt(Div.split("-")[1]);
-    console.log('Mouse passou por cima da div com ID:', valorDiv);
     const tabela = document.getElementById('tabelaDados');
     const linhas = tabela.getElementsByTagName('tr');
 
@@ -91,3 +105,26 @@ function hoverVaga(Div, hover) {
         }
     }
 }
+
+function abrirCobranca(indice, idRealTime, idCadastro) {
+    var largura = 1000;
+    var altura = 500;
+    var esquerda = (screen.availWidth - largura) / 2;
+    var topo = (screen.availHeight - altura) / 2;
+    window.open(`cobranca.html?i=${indice}&id1=${idRealTime}&id2=${idCadastro}`, "_blank", "width=" + largura + ",height=" + altura + ",left=" + esquerda + ",top=" + topo);
+}
+
+function showAlert1(message, className) {
+    const element = document.getElementById('pagamento');
+    if (element) {
+      element.remove();
+    }
+    const div = document.createElement('div');
+    div.className = `alert alert-${className} w-50 mx-auto`;
+    div.appendChild(document.createTextNode(message));
+    const container = document.querySelector('.pag'); 
+    container.insertBefore(div, container.firstChild);
+    setTimeout(() => div.remove(), 3000);
+
+}
+

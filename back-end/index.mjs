@@ -21,8 +21,3 @@ app.use(routes);
 app.listen(PORT, () => {
   console.log(`Servidor em execução na porta ${PORT}`);
 });
-
-
-
-
-

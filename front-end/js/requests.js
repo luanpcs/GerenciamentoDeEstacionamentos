@@ -1,4 +1,4 @@
-function enviarCadastro(nome, modelo, placa) 
+function enviarCadastro(nome, modelo, placa, registrado) 
 {
     const url = 'http://localhost:3000/cadastro';
 
@@ -7,12 +7,28 @@ function enviarCadastro(nome, modelo, placa)
         headers: {
         'Content-Type': 'application/json',
     },
-        body: JSON.stringify({ nome, modelo, placa }),
+        body: JSON.stringify({ nome, modelo, placa, registrado }),
     })
     .then(response => response.json())
     .then(data => console.log(data))
     .catch(error => console.error(error));
 }
+
+function atualizarCadastro(id, nome, modelo, placa, registrado) {
+    const url = `http://localhost:3000/cadastro/${id}`;
+  
+    fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ nome, modelo, placa, registrado }),
+    })
+      .then(response => response.json())
+      .then(data => console.log(data))
+      .catch(error => console.error(error));
+  }
+  
 
 function buscarCadastro() 
 {
@@ -30,9 +46,9 @@ function buscarCadastro()
             _id: item._id,
             nome: item.nome,
             modelo: item.modelo,
-            placa: item.placa
+            placa: item.placa,
+            registrado: item.registrado
     }));
-        console.log(cadastros);
         return cadastros;
     })
     .catch(error => {
@@ -68,7 +84,6 @@ function buscarTempoReal()
         return response.json();
     })
     .then(data => {
-        console.log(data);
         return data;
     })
     .catch(error => {
@@ -118,7 +133,6 @@ function atualizarRegistroTempoReal(id, nome, modelo, placa, timestampSaida, val
         return response.json();
     })
     .then(data => {
-        console.log(data.message);
         return data;
     })
     .catch(error => {
@@ -139,7 +153,6 @@ function excluirRegistroTempoReal(id)
         return response.json();
     })
     .then(data => {
-        console.log(data.message);
         return data;
     })
     .catch(error => {
@@ -166,7 +179,6 @@ function enviarVagas(dadosVagas)
         return response.json();
     })
     .then(data => {
-        console.log(data);
         return data;
     })
     .catch(error => {
@@ -193,7 +205,6 @@ function atualizarVagas(id, dadosVagas)
         return response.json();
     })
     .then(data => {
-        console.log(data);
         return data;
     })
     .catch(error => {
@@ -214,7 +225,6 @@ function obterTodosVagas()
         return response.json();
     })
     .then(data => {
-        console.log(data);
         return data;
     })
     .catch(error => {

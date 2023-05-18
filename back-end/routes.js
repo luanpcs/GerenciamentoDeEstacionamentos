@@ -98,8 +98,8 @@ router.get('/vagas', async (req, res) => {
 
 router.post('/cadastro', async (req, res) => {
     try {
-        const { nome, modelo, placa } = req.body;
-        const model = new ModeloEstacionamento({ nome, modelo, placa });
+        const { nome, modelo, placa, registrado } = req.body;
+        const model = new ModeloEstacionamento({ nome, modelo, placa, registrado });
         await model.save();
         res.status(200).json({ message: 'Dados enviados com sucesso!' });
     } catch (error) {
@@ -128,5 +128,28 @@ router.delete('/descadastro/:id', async (req, res) => {
         res.status(500).json({ message: 'Erro ao excluir dados.' });
     }
 });
+
+router.put('/cadastro/:id', async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { nome, modelo, placa, registrado } = req.body;
+  
+      const updatedModel = await ModeloEstacionamento.findByIdAndUpdate(
+        id,
+        { nome, modelo, placa, registrado },
+        { new: true }
+      );
+  
+      if (!updatedModel) {
+        return res.status(404).json({ message: 'Registro não encontrado.' });
+      }
+  
+      res.status(200).json({ message: 'Registro atualizado com sucesso!', data: updatedModel });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Erro ao atualizar registro.' });
+    }
+  });
+  
 
 export default router;

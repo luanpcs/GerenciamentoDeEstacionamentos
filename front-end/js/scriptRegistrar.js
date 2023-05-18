@@ -1,3 +1,4 @@
+
 function carregaCadastros() {
     buscarCadastro()
         .then
@@ -29,6 +30,10 @@ function carregaCadastros() {
                 saidaBtn.classList.add("btn", "btn-danger");
                 saidaBtn.addEventListener("click", registraSaida(dados[i]));
                 saidaCell.appendChild(saidaBtn);
+
+                if (dados[i].registrado) {
+                    entradaBtn.disabled = true
+                }
             }
         }
         )
@@ -59,8 +64,8 @@ function registraEntrada(dado, botao) {
                     vagaEscolhida,
                     0)
 
+                atualizarCadastro(dado._id, dado.nome, dado.modelo, dado.placa, true)
                 atualizarVagas(dados[0]._id, dados[0].vagas);
-                console.log(botao)
                 botao.disabled = true
             }
             )
@@ -72,32 +77,50 @@ function registraSaida(dado) {
         var timestamp = Date.now();
         var vagaAtual
         var vagasBanco
+        var idCadastro
+        var registroEncontrado
+        var valor
         buscarTempoReal()
             .then
             (dados => {
                 for (var i = 0; i < dados.length; i++) {
                     if (dados[i].placa == dado.placa) {
-                        dado._id = dados[i]._id
+                        idCadastro = dados[i]._id
                         vagaAtual = dados[i].vaga
+                        registroEncontrado = i
                     }
                 }
-                atualizarRegistroTempoReal(dado._id,
+                const tempoUtilizado = (Date.parse(converterTimestamp(timestamp)) - Date.parse(dados[registroEncontrado].timestampEntrada)) / (1000 * 60 * 60)
+
+                if (tempoUtilizado < 1) valor = 5
+                else valor = (5 + (Math.ceil(tempoUtilizado - 1) * 2))
+
+                atualizarRegistroTempoReal(idCadastro,
                     dado.nome,
                     dado.modelo,
                     dado.placa,
                     timestamp,
-                    0)
-                obterTodosVagas()
+                    valor)
+                    
+                    
+                    obterTodosVagas()
                     .then
                     (vagas => {
                         vagasBanco = vagas[0].vagas
-                        console.log(vagas[0].vagas)
                         vagasBanco[vagaAtual - 1] = 0
+                        
                         atualizarVagas(vagas[0]._id, vagasBanco);
-                        console.log(vagas)
+                        abrirCobranca(registroEncontrado, dados[registroEncontrado]._id, dado._id)
                     }
                     )
             }
             )
     };
 }
+
+window.addEventListener('message', function(event) {
+    if (event.data === 'reloadPage') {
+        setTimeout(function () { location.reload(); }, 1950);
+    }
+  });
+

@@ -8,7 +8,7 @@ document.querySelector('#formulario').addEventListener(
     const dados = new Dados(nome, modelo, placa);
 
     if (validateInputs(dados) == true) {
-        enviarCadastro(dados.nome, dados.modelo, dados.placa);
+        enviarCadastro(dados.nome, dados.modelo, dados.placa, false);
         showAlert('Usuário cadastrado com sucesso!', 'success');
         setTimeout(function () { location.reload(); }, 1500);
     }

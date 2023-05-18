@@ -3,7 +3,7 @@ function carregaRegistros() {
         .then
         (dados => {
             var tabela = document.getElementById("tabelaDados");
-
+            console.log(dados)
             for (var i = 0; i < dados.length; i++) {
                 var linha = tabela.insertRow();
 
