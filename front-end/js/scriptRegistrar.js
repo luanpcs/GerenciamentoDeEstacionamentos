@@ -101,14 +101,14 @@ function registraSaida(dado) {
                     dado.placa,
                     timestamp,
                     valor)
-                    
-                    
-                    obterTodosVagas()
+
+
+                obterTodosVagas()
                     .then
                     (vagas => {
                         vagasBanco = vagas[0].vagas
                         vagasBanco[vagaAtual - 1] = 0
-                        
+
                         atualizarVagas(vagas[0]._id, vagasBanco);
                         abrirCobranca(registroEncontrado, dados[registroEncontrado]._id, dado._id)
                     }
@@ -118,9 +118,9 @@ function registraSaida(dado) {
     };
 }
 
-window.addEventListener('message', function(event) {
+window.addEventListener('message', function (event) {
     if (event.data === 'reloadPage') {
         setTimeout(function () { location.reload(); }, 1950);
     }
-  });
+});
 

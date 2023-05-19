@@ -41,7 +41,11 @@ function reqCobrancaInfos() {
 
 function realizarPagamento() {
     excluirRegistroTempoReal(currentIdRealTime)
+    var currentDadosRegistro = currentDados
+    
     atualizarCadastro(currentIdCadastro, currentDados.nome, currentDados.modelo, currentDados.placa, false)
+    enviarRegistroTotal(currentDadosRegistro[0].nome, currentDadosRegistro[0].modelo, currentDadosRegistro[0].placa, currentDadosRegistro[0].timestampEntrada, 
+        currentDadosRegistro[0].timestampSaida, currentDadosRegistro[0].vaga, currentDadosRegistro[0].valor)
     showAlert1('Pagamento efetuado com sucesso!', 'success');
     window.opener.postMessage('reloadPage', '*');
     setTimeout(function () { window.close(); }, 2000);

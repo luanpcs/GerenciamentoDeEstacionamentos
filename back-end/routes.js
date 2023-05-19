@@ -1,7 +1,54 @@
 import express from 'express';
-import { ModeloEstacionamento, ModeloUtilizacao, ModeloStatusVagas } from './models.js';
+import { ModeloEstacionamento, ModeloUtilizacao, ModeloStatusVagas, ModeloRegistrosTotais, ModeloLogins } from './models.js';
 
 const router = express.Router();
+
+router.post('/login', async (req, res) => {
+    try {
+        const {user, senha} = req.body;
+        const model = new ModeloLogins({user, senha});
+        await model.save();
+        res.status(200).json({ message: 'Dados enviados com sucesso!' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Erro ao enviar dados.' });
+    }
+}
+);
+
+router.get('/login', async (req, res) => {
+    try {
+        const dados = await ModeloLogins.find();
+        res.status(200).json(dados);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Erro ao obter os dados de tempo real.' });
+    }
+});
+
+
+router.post('/registrosTotais', async (req, res) => {
+    try {
+        const { nome, modelo, placa, timestampEntrada, timestampSaida, vaga, valor } = req.body;
+        const model = new ModeloRegistrosTotais({ nome, modelo, placa, timestampEntrada, timestampSaida, vaga, valor });
+        await model.save();
+        res.status(200).json({ message: 'Dados enviados com sucesso!' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Erro ao enviar dados.' });
+    }
+}
+);
+
+router.get('/registrosTotais', async (req, res) => {
+    try {
+        const dados = await ModeloRegistrosTotais.find();
+        res.status(200).json(dados);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Erro ao obter os dados de tempo real.' });
+    }
+});
 
 router.post('/tempoReal', async (req, res) => {
     try {
@@ -131,25 +178,24 @@ router.delete('/descadastro/:id', async (req, res) => {
 
 router.put('/cadastro/:id', async (req, res) => {
     try {
-      const { id } = req.params;
-      const { nome, modelo, placa, registrado } = req.body;
-  
-      const updatedModel = await ModeloEstacionamento.findByIdAndUpdate(
-        id,
-        { nome, modelo, placa, registrado },
-        { new: true }
-      );
-  
-      if (!updatedModel) {
-        return res.status(404).json({ message: 'Registro não encontrado.' });
-      }
-  
-      res.status(200).json({ message: 'Registro atualizado com sucesso!', data: updatedModel });
+        const { id } = req.params;
+        const { nome, modelo, placa, registrado } = req.body;
+
+        const updatedModel = await ModeloEstacionamento.findByIdAndUpdate(
+            id,
+            { nome, modelo, placa, registrado },
+            { new: true }
+        );
+
+        if (!updatedModel) {
+            return res.status(404).json({ message: 'Registro não encontrado.' });
+        }
+
+        res.status(200).json({ message: 'Registro atualizado com sucesso!', data: updatedModel });
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Erro ao atualizar registro.' });
+        console.error(error);
+        res.status(500).json({ message: 'Erro ao atualizar registro.' });
     }
-  });
-  
+});
 
 export default router;

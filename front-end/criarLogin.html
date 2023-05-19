@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="front-end/css/bootstrap.min.css">
-    <link rel="stylesheet" href="front-end/css/style.css">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/style.css">
     <link rel="icon" type="image/png" href="../assets/icon.png">
     <title>Gerência de estacionamentos</title>
 </head>
@@ -16,13 +16,14 @@
     <header>
         <div class="log">Sistema de gerenciamento de estacionamentos</div>
     </header>
+
     <section class="vh-100" id="login">
         <div class="container-fluid h-custom">
             <div class="row d-flex justify-content-center align-items-center h-100" id="login">
                 <img src="../assets/icon.png" class="img-fluid" alt="Sample image">
                 <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1" id="form">
                     <form>
-                        <div id="title-login">Entrar</div>
+                        <div id="title-login">Registrar</div>
                         <div class="form-outline mb-4">
                             <input type="text" class="form-control rounded-0 shadow-sm" id="usuario"
                                 placeholder="Usuário">
@@ -32,10 +33,10 @@
 
 
                         <div class="text-center text-lg-start mt-4 pt-2">
-                            <button type="submit" class="btn btn-primary mx-auto d-block" id="btnOne">Login</button>
+                            <button type="submit" class="btn btn-primary mx-auto d-block" id="btnOne">Registrar</button>
 
-                            <p class="small fw-bold mt-2 pt-1 mb-0">Ainda não possui um registro? <a
-                                    href="front-end/criarLogin.html" class="link-danger">Registrar</a></p>
+                            <p class="small fw-bold mt-2 pt-1 mb-0">Já possui um registro? <a href="../index.html"
+                                class="link-danger">Entrar</a></p>
                         </div>
                     </form>
                 </div>
@@ -45,11 +46,11 @@
 
     <script>
     </script>
-    <script src="back-end/index.mjs"></script>
-    <script src="front-end/js/utils.js"></script>
-    <script src="front-end/js/requests.js"></script>
-    <script src="front-end/js/bootstrap.min.js"></script>
-    <script src="front-end/js/scriptLogin.js"></script>
+    <script src="../back-end/index.mjs"></script>
+    <script src="./js/utils.js"></script>
+    <script src="./js/requests.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <script src="./js/scriptRegistrarLogin.js"></script>
 
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>

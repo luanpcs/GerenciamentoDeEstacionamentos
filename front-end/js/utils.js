@@ -125,6 +125,21 @@ function showAlert1(message, className) {
     const container = document.querySelector('.pag'); 
     container.insertBefore(div, container.firstChild);
     setTimeout(() => div.remove(), 3000);
+}
 
+function aceitarLogin() {
+    const element = document.getElementById('form');
+    if (element) {
+      element.remove();
+    }
+    setTimeout(() => window.location.href ="front-end/home.html", 1500);
+}
+
+function recusar() {
+    const element = document.getElementById('form');
+    if (element) {
+      element.remove();
+    }
+    setTimeout(function () { location.reload(); }, 1500);
 }
 
