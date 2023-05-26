@@ -1,31 +1,3 @@
-/* document.getElementById('login').addEventListener('submit', function (event) {
-    event.preventDefault();
-
-    const user = document.getElementById('usuario').value;
-    const senha = document.getElementById('senha').value;
-
-    registraLogin(user, senha);
-
-    console.log(user)
-
-    const usuarioPredefinido = user;
-    const senhaPredefinida = "senha";
-    buscaLogin()
-        .then
-        (dados => {
-            console.log(dados)
-
-            for (let i = 0; i < dados.length; i++) {
-                const registro = dados[i];
-                if (registro.user === usuarioPredefinido && registro.senha === senhaPredefinida) {
-                    console.log('Usuário e senha correspondem!');
-                    break;
-                }
-            }
-        });
-}); */
-
-
 document.querySelector('#login').addEventListener(
     'submit', (e) => {
         var loginAceito = 0;

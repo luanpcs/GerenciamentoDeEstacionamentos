@@ -1,0 +1,26 @@
+{
+  "name": "gerenciamentodeestacionamentos",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+      "delete-mochawesome-folder":"rm -f mochawesome-report/*.json",
+      "e2e_mochawesome": "yarn cypress run --spec cypress/integration/Tests/*.js",
+      "merge-json":"npx mochawesome-merge --reportDir mochawesome-report > mochawesome1.json",
+      "html-generator": " npx mochawesome-report-generator mochawesome1.json"
+    
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "cypress": "^7.1.0",
+    "mochawesome": "^7.1.3",
+    "mochawesome-merge": "^4.2.0",
+    "mochawesome-report-generator": "^6.2.0"
+  }
+}

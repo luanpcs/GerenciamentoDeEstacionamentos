@@ -1,0 +1,11 @@
+{
+    "reporter": "mochawesome",
+    "reporterOptions": {
+      "reportDir": "cypress/reports",
+      "overwrite": false,
+      "html": true,
+      "json": false
+    },
+    "viewportWidth": 1920,
+    "viewportHeight": 1080
+}
